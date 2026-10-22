@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lavatrice di casa — settimana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topnav">
+        <a class="brand" href="index.html"
+          >Lavatrice di casa
+          <span>calendario condiviso · 1 stendino</span>
+        </a>
+        <nav class="nav-links">
+          <a class="active" href="index.html">Settimana</a>
+          <a href="prenota.html">Prenota</a>
+        </nav>
+      </header>
+
+      <p class="hero-line">
+        Chi ha preso la lavatrice questa settimana. Tra un ciclo e l’altro
+        resta bloccato il tempo per appendere: niente asciugatrice, stendino
+        unico.
+      </p>
+
+      <section class="panel">
+        <div class="week-controls">
+          <h1 id="week-title">Questa settimana</h1>
+          <div class="btn-row">
+            <button type="button" id="prev-week" aria-label="Settimana precedente">←</button>
+            <button type="button" id="today-week" class="ghost">Oggi</button>
+            <button type="button" id="next-week" aria-label="Settimana successiva">→</button>
+          </div>
+        </div>
+        <div class="week-grid" id="week-grid"></div>
+        <p class="note">
+          <strong>Regola casa:</strong> ogni prenotazione occupa lavaggio + tempo
+          per scaricare e appendere. La prossima persona può partire solo quando
+          lo slot è libero.
+        </p>
+      </section>
+    </div>
+    <script type="module" src="js/settimana.js"></script>
+  </body>
+</html>
