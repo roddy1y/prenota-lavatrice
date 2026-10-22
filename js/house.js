@@ -5,8 +5,7 @@ export function mountHouseControl(navEl) {
   if (!navEl) return;
 
   const wrap = document.createElement("div");
-  wrap.style.cssText =
-    "display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;width:100%;margin-top:0.65rem;";
+  wrap.className = "house-bar";
 
   const label = document.createElement("label");
   label.style.cssText =
@@ -26,7 +25,7 @@ export function mountHouseControl(navEl) {
   wrap.appendChild(btn);
 
   const parent = navEl.parentElement;
-  parent.insertBefore(wrap, navEl.nextSibling);
+  parent.appendChild(wrap);
 
   const input = wrap.querySelector("#house-code");
   input.value = getHouseCode();
