@@ -50,25 +50,79 @@ a:hover {
 .shell {
   width: min(1080px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 1.25rem 0 3rem;
+  padding: 1.25rem 0 calc(5.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 .topnav {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem 1rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
   animation: rise 0.55s ease both;
 }
 
-.house-bar {
-  flex: 1 1 100%;
-  display: flex;
-  align-items: center;
+.view[hidden] {
+  display: none !important;
+}
+
+.cta-mobile {
+  margin: 0 0 1rem;
+}
+
+.cta-mobile .primary {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  font-size: 1.05rem;
+  border-radius: 14px;
+}
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
   gap: 0.45rem;
-  flex-wrap: wrap;
+  padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+  background: rgba(244, 248, 250, 0.92);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--stroke);
+  box-shadow: 0 -8px 24px rgba(26, 43, 51, 0.06);
+}
+
+.tab {
+  appearance: none;
+  border: 1px solid var(--stroke);
+  background: #fff;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.92rem;
+  border-radius: 14px;
+  padding: 0.85rem 0.6rem;
+  min-height: 48px;
+  cursor: pointer;
+}
+
+.tab.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #f4f8fa;
+}
+
+.tab-main {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #f7fffc;
+}
+
+.tab-main.is-active {
+  background: var(--teal-deep);
+  border-color: var(--teal-deep);
+  color: #f7fffc;
 }
 
 .brand {

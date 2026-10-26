@@ -44,6 +44,9 @@ export const SLOT_MINUTES = 30;
 
 export const STORAGE_KEY = "prenota-lavatrice-v1";
 
+/** Canale sync fisso: solo questa casa, niente codice da inserire. */
+export const HOUSE_CHANNEL = "roddy1y-casa-lavatrice-privata";
+
 export function washById(id) {
   return WASH_TYPES.find((w) => w.id === id) ?? WASH_TYPES[0];
 }

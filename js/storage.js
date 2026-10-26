@@ -1,22 +1,10 @@
-import { STORAGE_KEY } from "./config.js";
-
-const HOUSE_KEY = "prenota-lavatrice-house";
-const DEFAULT_HOUSE = "casa";
+import { HOUSE_CHANNEL, STORAGE_KEY } from "./config.js";
 
 /** @type {Map<string, object>} */
 let cache = new Map();
 /** @type {null | { get: Function }} */
 let gunRoot = null;
 let ready = false;
-
-function houseId() {
-  let id = localStorage.getItem(HOUSE_KEY);
-  if (!id) {
-    id = DEFAULT_HOUSE;
-    localStorage.setItem(HOUSE_KEY, id);
-  }
-  return id.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40) || DEFAULT_HOUSE;
-}
 
 function emit() {
   window.dispatchEvent(new CustomEvent("bookings-changed"));
@@ -58,7 +46,7 @@ function initGun() {
     ],
   });
 
-  gunRoot = gun.get(`prenota-lavatrice-v1`).get(houseId()).get("bookings");
+  gunRoot = gun.get("prenota-lavatrice-v2").get(HOUSE_CHANNEL).get("bookings");
 
   gunRoot.map().on((data, id) => {
     if (!data || data._deleted) {
@@ -77,25 +65,10 @@ function initGun() {
   });
 
   ready = true;
-  // Piccolo ritardo: lascia arrivare i peer, poi rifletti lo stato
   setTimeout(emit, 400);
 }
 
 loadLocalMirror();
-
-export function getHouseCode() {
-  return houseId();
-}
-
-export function setHouseCode(code) {
-  const clean = String(code || DEFAULT_HOUSE)
-    .trim()
-    .replace(/[^a-zA-Z0-9_-]/g, "")
-    .slice(0, 40);
-  localStorage.setItem(HOUSE_KEY, clean || DEFAULT_HOUSE);
-  cache = new Map();
-  location.reload();
-}
 
 export function listBookings() {
   return fromCache();
@@ -123,21 +96,18 @@ export function removeBooking(id) {
   persistLocalMirror();
   emit();
   if (gunRoot) {
-    gunRoot.get(id).put({ id, _deleted: true, name: null, washId: null, start: null });
+    gunRoot.get(id).put({
+      id,
+      _deleted: true,
+      name: null,
+      washId: null,
+      start: null,
+    });
   }
-}
-
-export function clearAllBookings() {
-  for (const id of [...cache.keys()]) removeBooking(id);
 }
 
 export function newId() {
   return `b_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
-}
-
-export function whenReady(cb) {
-  if (ready) cb();
-  else window.addEventListener("bookings-changed", () => cb(), { once: true });
 }
 
 // Carica Gun da CDN poi avvia sync

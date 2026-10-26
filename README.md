@@ -1,12 +1,12 @@
 # Lavatrice di casa
 
-Calendario per prenotare la lavatrice in casa (GitHub Pages).
+Calendario unico per prenotare la lavatrice **di questa casa** (GitHub Pages).
 
-- **Prenota** — nome, giorno, ora, tipo di lavaggio
-- **Settimana** — chi ha prenotato nei 7 giorni
-- **Stendino unico** (niente asciugatrice, ambiente umido): ogni turno blocca lavaggio + appendere + **asciugatura** (tempi pessimistici)
+Una sola pagina: **Settimana** + **Prenota lavatrice** (barra fissa in basso, pensata per iPhone).
 
-## Tipi di lavaggio
+Niente codice casa da inserire: sync condiviso solo su questo sito.
+
+## Tipi di lavaggio (ambiente umido)
 
 | Tipo | Ciclo | Appendere | Asciugatura | Stendino occupato |
 |------|-------|-----------|-------------|-------------------|
@@ -15,14 +15,8 @@ Calendario per prenotare la lavatrice in casa (GitHub Pages).
 | Delicati / rapido | 1 h | 20 min | 10 h | 11 h 20 |
 | Lenzuola / biancheria | 2 h 30 | 45 min | 36 h | 39 h 15 |
 
-I minuti si cambiano in `js/config.js` (`washMin`, `hangMin`, `dryMin`).
+Tempi in `js/config.js`.
 
-## Codice casa
+## Link
 
-Tutti devono usare lo **stesso codice casa** (default: `casa`) così le prenotazioni sono condivise tra i telefoni. Si cambia dalla barra in alto.
-
-## GitHub Pages
-
-Il sito è statico: abilita Pages sul branch `main`, cartella `/` (root).
-
-URL tipico: `https://<utente>.github.io/prenota-lavatrice/`
+https://roddy1y.github.io/prenota-lavatrice/
