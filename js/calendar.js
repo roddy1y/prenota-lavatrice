@@ -26,6 +26,12 @@ export function washEnd(booking) {
   return booking.start + wash.washMin * 60_000;
 }
 
+/** Inizio asciugatura: fine ciclo + tempo per appendere. */
+export function dryStart(booking) {
+  const wash = washById(booking.washId);
+  return booking.start + (wash.washMin + wash.hangMin) * 60_000;
+}
+
 /** Intervalli [start, end) si sovrappongono? */
 export function overlaps(aStart, aEnd, bStart, bEnd) {
   return aStart < bEnd && bStart < aEnd;
@@ -59,13 +65,16 @@ export function formatRange(booking) {
   const wash = washById(booking.washId);
   const start = formatTime(booking.start);
   const machineDone = formatTime(washEnd(booking));
+  const dryingFrom = formatTime(dryStart(booking));
   const free = formatTime(endOfBooking(booking));
   return {
     start,
     machineDone,
+    dryingFrom,
     free,
     washLabel: wash.label,
     hangMin: wash.hangMin,
+    dryMin: wash.dryMin ?? 0,
   };
 }
 

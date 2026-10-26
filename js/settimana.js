@@ -1,4 +1,4 @@
-import { washById } from "./config.js";
+import { formatDuration, washById } from "./config.js";
 import { listBookings, removeBooking } from "./storage.js";
 import {
   addDays,
@@ -70,7 +70,7 @@ function render() {
           <strong>${escapeHtml(b.name)}</strong>
           <div class="meta">${range.start} → fine ciclo ${formatTime(washEnd(b))}</div>
           <div class="meta">${escapeHtml(wash.label)}</div>
-          <div class="hang">Appendere fino alle ${range.free} · poi libera</div>
+          <div class="hang">Stendino occupato fino alle ${range.free}<br />(asciuga da ${range.dryingFrom} · ${formatDuration(wash.dryMin)})</div>
           <div class="actions">
             <button type="button" data-id="${b.id}">Cancella</button>
           </div>

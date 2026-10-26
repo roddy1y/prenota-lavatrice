@@ -37,7 +37,8 @@ for (const wash of WASH_TYPES) {
       <div class="title">${wash.label}</div>
       <div class="detail">
         Ciclo ${formatDuration(wash.washMin)} · appendere ${formatDuration(wash.hangMin)} ·
-        slot totale ${formatDuration(blockMinutes(wash))}
+        asciugatura ${formatDuration(wash.dryMin)} ·
+        stendino occupato ${formatDuration(blockMinutes(wash))}
       </div>
     </div>
   `;
@@ -59,8 +60,9 @@ function updatePreview() {
   const wash = washById(selectedWashId());
   const start = parseLocalDateTime(date, time);
   const machineDone = start + wash.washMin * 60_000;
+  const dryingFrom = start + (wash.washMin + wash.hangMin) * 60_000;
   const free = start + blockMinutes(wash) * 60_000;
-  preview.value = `${formatTime(start)} → ciclo ${formatTime(machineDone)} → libera ${formatTime(free)}`;
+  preview.value = `${formatTime(start)} → ciclo ${formatTime(machineDone)} → asciuga da ${formatTime(dryingFrom)} → stendino libero ${formatTime(free)}`;
 }
 
 form.addEventListener("change", updatePreview);
@@ -96,7 +98,7 @@ form.addEventListener("submit", (e) => {
     const until = formatTime(endOfBooking(conflict));
     showFeedback(
       "err",
-      `Slot occupato: ${conflict.name} fino alle ${until} (include tempo per appendere). Scegli un altro orario.`
+      `Stendino ancora occupato da ${conflict.name} fino alle ${until} (include asciugatura). Scegli un altro orario.`
     );
     return;
   }
@@ -113,9 +115,9 @@ form.addEventListener("submit", (e) => {
   const wash = washById(washId);
   showFeedback(
     "ok",
-    `Prenotato! ${name}: lavaggio fino alle ${formatTime(
+    `Prenotato! ${name}: ciclo fino alle ${formatTime(
       start + wash.washMin * 60_000
-    )}, stendino/libera alle ${formatTime(endOfBooking(booking))}.`
+    )}, asciugatura ${formatDuration(wash.dryMin)}, stendino libero alle ${formatTime(endOfBooking(booking))}.`
   );
   form.name.value = "";
   updatePreview();

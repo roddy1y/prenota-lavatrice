@@ -1,34 +1,39 @@
 /** Tipi di lavaggio e tempi (minuti).
- *  Dopo ogni ciclo serve tempo per scaricare e appendere: stendino unico, niente asciugatrice.
- *  Lo slot bloccato = durata lavaggio + tempo appendere.
+ *  Stendino unico, niente asciugatrice.
+ *  Slot bloccato = lavaggio + appendere + asciugatura sullo stendino.
+ *  La prossima persona parte solo quando lo stendino è di nuovo libero.
  */
 export const WASH_TYPES = [
   {
     id: "cotone",
     label: "Cotone / pieno carico",
     washMin: 120,
-    hangMin: 45,
+    hangMin: 30,
+    dryMin: 360, // 6 h
     color: "#2a9d8f",
   },
   {
     id: "sintetici",
     label: "Sintetici",
     washMin: 90,
-    hangMin: 40,
+    hangMin: 25,
+    dryMin: 240, // 4 h
     color: "#457b9d",
   },
   {
     id: "rapido",
     label: "Delicati / rapido",
     washMin: 60,
-    hangMin: 30,
+    hangMin: 20,
+    dryMin: 180, // 3 h
     color: "#7b68a6",
   },
   {
     id: "lenzuola",
     label: "Lenzuola / biancheria",
     washMin: 150,
-    hangMin: 60,
+    hangMin: 45,
+    dryMin: 480, // 8 h
     color: "#c45c26",
   },
 ];
@@ -43,8 +48,9 @@ export function washById(id) {
   return WASH_TYPES.find((w) => w.id === id) ?? WASH_TYPES[0];
 }
 
+/** Minuti totali in cui lavatrice+stendino bloccano il prossimo turno. */
 export function blockMinutes(wash) {
-  return wash.washMin + wash.hangMin;
+  return wash.washMin + wash.hangMin + (wash.dryMin ?? 0);
 }
 
 export function formatDuration(min) {
