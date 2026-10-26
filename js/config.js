@@ -1,7 +1,7 @@
 /** Tipi di lavaggio e tempi (minuti).
- *  Stendino unico, niente asciugatrice.
- *  Slot bloccato = lavaggio + appendere + asciugatura sullo stendino.
- *  La prossima persona parte solo quando lo stendino è di nuovo libero.
+ *  Stendino unico, niente asciugatrice, ambiente umido (~21 °C).
+ *  dryMin = scenario pessimistico (carico fitto + umidità alta).
+ *  Slot bloccato = lavaggio + appendere + asciugatura.
  */
 export const WASH_TYPES = [
   {
@@ -9,7 +9,7 @@ export const WASH_TYPES = [
     label: "Cotone / pieno carico",
     washMin: 120,
     hangMin: 30,
-    dryMin: 720, // 12 h
+    dryMin: 1440, // 24 h
     color: "#2a9d8f",
   },
   {
@@ -17,7 +17,7 @@ export const WASH_TYPES = [
     label: "Sintetici",
     washMin: 90,
     hangMin: 25,
-    dryMin: 480, // 8 h
+    dryMin: 720, // 12 h
     color: "#457b9d",
   },
   {
@@ -25,7 +25,7 @@ export const WASH_TYPES = [
     label: "Delicati / rapido",
     washMin: 60,
     hangMin: 20,
-    dryMin: 360, // 6 h
+    dryMin: 600, // 10 h
     color: "#7b68a6",
   },
   {
@@ -33,7 +33,7 @@ export const WASH_TYPES = [
     label: "Lenzuola / biancheria",
     washMin: 150,
     hangMin: 45,
-    dryMin: 960, // 16 h
+    dryMin: 2160, // 36 h
     color: "#c45c26",
   },
 ];
