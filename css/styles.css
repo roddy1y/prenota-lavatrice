@@ -66,6 +66,36 @@ a:hover {
   display: none !important;
 }
 
+.db-status {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--ink-soft);
+}
+
+.db-status.ok {
+  background: rgba(31, 122, 108, 0.12);
+  border-color: rgba(31, 122, 108, 0.28);
+  color: var(--teal-deep);
+}
+
+.db-status.warn {
+  background: rgba(180, 83, 9, 0.1);
+  border-color: rgba(180, 83, 9, 0.28);
+  color: var(--warn);
+}
+
+.db-status.err {
+  background: rgba(180, 35, 24, 0.08);
+  border-color: rgba(180, 35, 24, 0.22);
+  color: var(--danger);
+}
+
 .cta-mobile {
   margin: 0 0 1rem;
 }

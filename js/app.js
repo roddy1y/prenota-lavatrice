@@ -4,7 +4,13 @@ import {
   formatDuration,
   washById,
 } from "./config.js";
-import { addBooking, listBookings, newId, removeBooking } from "./storage.js";
+import {
+  addBooking,
+  getStorageStatus,
+  listBookings,
+  newId,
+  removeBooking,
+} from "./storage.js";
 import {
   addDays,
   bookingsForDay,
@@ -51,6 +57,35 @@ showView(location.hash === "#prenota" ? "prenota" : "settimana");
 window.addEventListener("hashchange", () => {
   showView(location.hash === "#prenota" ? "prenota" : "settimana");
 });
+
+/* —— Stato database —— */
+const dbStatus = document.getElementById("db-status");
+
+function updateDbStatus() {
+  if (!dbStatus) return;
+  const s = getStorageStatus();
+  if (!s.ready) {
+    dbStatus.className = "db-status";
+    dbStatus.textContent = "Collegamento database…";
+    return;
+  }
+  if (s.usingDb) {
+    dbStatus.className = "db-status ok";
+    dbStatus.textContent = "Database connesso · prenotazioni condivise in casa";
+    return;
+  }
+  if (!s.configured) {
+    dbStatus.className = "db-status warn";
+    dbStatus.textContent =
+      "Database non configurato · ora i dati restano solo su questo telefono";
+    return;
+  }
+  dbStatus.className = "db-status err";
+  dbStatus.textContent = `Database non raggiungibile${s.error ? `: ${s.error}` : ""}`;
+}
+
+window.addEventListener("bookings-changed", updateDbStatus);
+updateDbStatus();
 
 /* —— Settimana —— */
 const grid = document.getElementById("week-grid");
@@ -125,9 +160,13 @@ function renderWeek() {
             <button type="button" data-id="${b.id}">Cancella</button>
           </div>
         `;
-        card.querySelector("button").addEventListener("click", () => {
-          if (confirm(`Cancellare la prenotazione di ${b.name}?`)) {
-            removeBooking(b.id);
+        card.querySelector("button").addEventListener("click", async () => {
+          if (!confirm(`Cancellare la prenotazione di ${b.name}?`)) return;
+          try {
+            await removeBooking(b.id);
+            renderWeek();
+          } catch (err) {
+            alert(`Errore cancellazione: ${err.message || err}`);
             renderWeek();
           }
         });
@@ -215,7 +254,7 @@ function showFeedback(type, message) {
   feedback.textContent = message;
 }
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const name = form.name.value.trim();
   const date = form.date.value;
@@ -250,16 +289,25 @@ form.addEventListener("submit", (e) => {
     start,
     createdAt: Date.now(),
   };
-  addBooking(booking);
 
-  const wash = washById(washId);
-  showFeedback(
-    "ok",
-    `Prenotato! ${name}: ciclo fino alle ${formatTime(
-      start + wash.washMin * 60_000
-    )}, asciugatura ${formatDuration(wash.dryMin)}, stendino libero alle ${formatTime(endOfBooking(booking))}.`
-  );
-  form.name.value = "";
-  updatePreview();
-  setTimeout(() => showView("settimana"), 900);
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    await addBooking(booking);
+    const wash = washById(washId);
+    showFeedback(
+      "ok",
+      `Prenotato! ${name}: ciclo fino alle ${formatTime(
+        start + wash.washMin * 60_000
+      )}, asciugatura ${formatDuration(wash.dryMin)}, stendino libero alle ${formatTime(endOfBooking(booking))}.`
+    );
+    form.name.value = "";
+    updatePreview();
+    setTimeout(() => showView("settimana"), 900);
+  } catch (err) {
+    showFeedback("err", `Salvataggio fallito: ${err.message || err}`);
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
 });

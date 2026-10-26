@@ -1,21 +1,33 @@
 # Lavatrice di casa
 
-Calendario unico per prenotare la lavatrice **di questa casa** (GitHub Pages).
+Calendario unico per la lavatrice di casa (GitHub Pages + **Supabase**).
 
-Una sola pagina: **Settimana** + **Prenota lavatrice** (barra fissa in basso, pensata per iPhone).
+## Database (Supabase)
 
-Niente codice casa da inserire: sync condiviso solo su questo sito.
+1. Crea un progetto gratis su [supabase.com](https://supabase.com)
+2. Apri **SQL Editor** → New query → incolla e Run il file `supabase/schema.sql`
+3. Vai in **Project Settings → API** e copia:
+   - Project URL
+   - `anon` `public` key
+4. Incollali in `js/db-config.js`:
+
+```js
+export const SUPABASE_URL = "https://xxxxx.supabase.co";
+export const SUPABASE_ANON_KEY = "eyJhbGciOi...";
+```
+
+5. Fai push su GitHub: le prenotazioni saranno condivise su tutti i telefoni.
+
+Senza queste chiavi l’app resta in modalità locale (solo quel telefono).
 
 ## Tipi di lavaggio (ambiente umido)
 
-| Tipo | Ciclo | Appendere | Asciugatura | Stendino occupato |
-|------|-------|-----------|-------------|-------------------|
-| Cotone / pieno | 2 h | 30 min | 24 h | 26 h 30 |
-| Sintetici | 1 h 30 | 25 min | 12 h | 13 h 55 |
-| Delicati / rapido | 1 h | 20 min | 10 h | 11 h 20 |
-| Lenzuola / biancheria | 2 h 30 | 45 min | 36 h | 39 h 15 |
-
-Tempi in `js/config.js`.
+| Tipo | Ciclo | Appendere | Asciugatura |
+|------|-------|-----------|-------------|
+| Cotone / pieno | 2 h | 30 min | 24 h |
+| Sintetici | 1 h 30 | 25 min | 12 h |
+| Delicati / rapido | 1 h | 20 min | 10 h |
+| Lenzuola / biancheria | 2 h 30 | 45 min | 36 h |
 
 ## Link
 
