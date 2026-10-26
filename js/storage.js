@@ -186,7 +186,8 @@ function loadScript() {
   }
 
   const script = document.createElement("script");
-  script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+  script.src =
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/dist/umd/supabase.min.js";
   script.async = true;
   script.onload = () => initSupabase();
   script.onerror = () => {
